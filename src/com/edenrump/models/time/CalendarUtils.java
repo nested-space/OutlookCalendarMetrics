@@ -1,4 +1,4 @@
-package com.edenrump.util;
+package com.edenrump.models.time;
 
 import com.edenrump.models.data.Table;
 import com.edenrump.models.data.TableRow;
@@ -14,6 +14,9 @@ public class CalendarUtils {
     public static CalendarEvent coerceRowToEvent(TableRow row){
         return new CalendarEvent(
                 row.getEntry(SUBJECT),
+                row.getEntry(CATEGORIES),
+                row.getEntry(ORGANISER),
+                row.getEntry(REQUIRED_ATTENDEES),
                 row.getEntry(START_DATE).trim() + " " + row.getEntry(START_TIME).trim(),
                 row.getEntry(END_DATE).trim() + " " + row.getEntry(END_TIME).trim());
     }

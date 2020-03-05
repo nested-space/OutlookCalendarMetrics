@@ -1,12 +1,9 @@
 package com.edenrump.controllers;
 
-import com.edenrump.calculators.MetricsCalculator;
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
-import com.edenrump.models.data.TableRow;
 import com.edenrump.models.time.Calendar;
-import com.edenrump.util.CalendarUtils;
 import javafx.beans.property.IntegerProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.input.DragEvent;
@@ -16,8 +13,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {

@@ -18,6 +18,19 @@ public class CalendarEvent {
 
     private String subject;
 
+    private String category;
+    private String organiser;
+
+    public String getRequiredAttendees() {
+        return requiredAttendees;
+    }
+
+    public void setRequiredAttendees(String requiredAttendees) {
+        this.requiredAttendees = requiredAttendees;
+    }
+
+    private String requiredAttendees;
+
     public String getSubject() {
         return subject;
     }
@@ -30,7 +43,7 @@ public class CalendarEvent {
         return end;
     }
 
-    public Duration getDuration(){
+    public Duration getDuration() {
         return Duration.between(this.start, this.end).abs();
     }
 
@@ -42,8 +55,11 @@ public class CalendarEvent {
         this.start = start;
     }
 
-    public CalendarEvent(String subject, String start, String end) {
+    CalendarEvent(String subject, String category, String organiser, String requiredAttendees, String start, String end) {
         this.subject = subject;
+        this.category = category;
+        this.organiser = organiser;
+        this.requiredAttendees = requiredAttendees;
         setStart(start);
         setEnd(end);
     }
@@ -52,17 +68,41 @@ public class CalendarEvent {
         this.end = end;
     }
 
-    public LocalDateTime setStart(String dateTime){
+    public LocalDateTime setStart(String dateTime) {
         this.start = coerceStringToDate(dateTime.trim());
         return this.start;
     }
 
-    public LocalDateTime setEnd(String dateTime){
-        this.end= coerceStringToDate(dateTime.trim());
+    public LocalDateTime setEnd(String dateTime) {
+        this.end = coerceStringToDate(dateTime.trim());
         return this.end;
     }
 
-    private LocalDateTime coerceStringToDate(String dateString){
+    private LocalDateTime coerceStringToDate(String dateString) {
         return LocalDateTime.parse(dateString, DATE_FORMAT);
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getOrganiser() {
+        return organiser;
+    }
+
+    public void setOrganiser(String organiser) {
+        this.organiser = organiser;
+    }
+
+    public boolean isMeeting() {
+        return this.getRequiredAttendees().length() != 0;
+    }
+
+    public boolean isAppointment() {
+        return this.requiredAttendees.length() == 0;
     }
 }

@@ -4,7 +4,7 @@ import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
 import com.edenrump.models.data.TableRow;
 import com.edenrump.models.time.CalendarEvent;
-import com.edenrump.util.CalendarUtils;
+import com.edenrump.models.time.CalendarUtils;
 
 import java.io.File;
 
