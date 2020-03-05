@@ -1,4 +1,4 @@
-package com.edenrump.models;
+package com.edenrump.models.data;
 
 import java.util.HashMap;
 import java.util.List;

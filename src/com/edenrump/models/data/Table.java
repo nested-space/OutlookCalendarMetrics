@@ -1,4 +1,4 @@
-package com.edenrump.models;
+package com.edenrump.models.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +35,10 @@ public class Table {
 
         entries.put(getHighestIndex() + 1, row);
         return true;
+    }
+
+    public List<TableRow> getRows(){
+        return new ArrayList<>(entries.values());
     }
 
     private int getHighestIndex() {

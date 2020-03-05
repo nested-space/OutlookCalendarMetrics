@@ -2,26 +2,26 @@ package com.edenrump.controllers;
 
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
-import com.edenrump.models.Table;
+import com.edenrump.models.data.Table;
+import com.edenrump.models.data.TableRow;
+import com.edenrump.models.time.CalendarEvent;
+import com.edenrump.util.CalendarUtils;
 import javafx.beans.property.IntegerProperty;
 import javafx.fxml.Initializable;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
     public VBox dragTarget;
-    private String errorMessage = "A file drag/drop error has occurred.";
 
     private static final int START = 1;
     private static final int LOADED = 2;
@@ -44,6 +44,16 @@ public class MainViewController implements Initializable {
     public void loadFile(File file){
         Table loadedData = CSVUtils.loadCSV(file);
         System.out.println("Data loaded");
+
+        //TODO: validate table entries with required headers
+
+        List<CalendarEvent> calendarEventList = new ArrayList<>();
+        for(TableRow row: loadedData.getRows()){
+            System.out.println("Appointment: " + row.getEntry("Subject"));
+            CalendarEvent calendarEvent = CalendarUtils.coerceRowToEvent(row);
+            System.out.println("Appointment length: " + calendarEvent.getDuration().toHours() + " hours");
+        }
+        //TODO: calculate metrics
     }
 
     /**
@@ -74,7 +84,7 @@ public class MainViewController implements Initializable {
                 loadFile(db.getFiles().get(0));
                 success = true;
             } else {
-                errorMessage = Defaults.MULTIPLE_FILE_UNSUPPORTED;
+                String errorMessage = Defaults.MULTIPLE_FILE_UNSUPPORTED;
                 applicationState.set(ERROR);
                 success = false;
             }

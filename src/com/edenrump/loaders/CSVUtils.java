@@ -1,7 +1,7 @@
 package com.edenrump.loaders;
 
-import com.edenrump.models.Table;
-import com.edenrump.models.TableRow;
+import com.edenrump.models.data.Table;
+import com.edenrump.models.data.TableRow;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class CSVUtils {
         return parseMultiLineContentToTable(content, includesHeaders);
     }
 
-    private static Table parseMultiLineContentToTable(String content, boolean includesHeaders) {
+    public static Table parseMultiLineContentToTable(String content, boolean includesHeaders) {
         Table table = new Table();
         String[] lines = content.split("\n");
         int rowCaret = 0;
