@@ -1,10 +1,11 @@
 package com.edenrump.controllers;
 
+import com.edenrump.calculators.MetricsCalculator;
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
 import com.edenrump.models.data.TableRow;
-import com.edenrump.models.time.CalendarEvent;
+import com.edenrump.models.time.Calendar;
 import com.edenrump.util.CalendarUtils;
 import javafx.beans.property.IntegerProperty;
 import javafx.fxml.Initializable;
@@ -43,17 +44,21 @@ public class MainViewController implements Initializable {
 
     public void loadFile(File file){
         Table loadedData = CSVUtils.loadCSV(file);
-        System.out.println("Data loaded");
 
         //TODO: validate table entries with required headers
+        Calendar calendar = new Calendar(loadedData);
 
-        List<CalendarEvent> calendarEventList = new ArrayList<>();
-        for(TableRow row: loadedData.getRows()){
-            System.out.println("Appointment: " + row.getEntry("Subject"));
-            CalendarEvent calendarEvent = CalendarUtils.coerceRowToEvent(row);
-            System.out.println("Appointment length: " + calendarEvent.getDuration().toHours() + " hours");
-        }
-        //TODO: calculate metrics
+        System.out.println(calendar.calculateTotalBookedTime().toHours());
+
+
+    }
+
+    private void updateDisplayWithMetrics(Table loadedData) {
+        System.out.println("Total booked time = ");
+    }
+
+    private void updateDisplayWithErrorMessage(String errorMessage){
+
     }
 
     /**

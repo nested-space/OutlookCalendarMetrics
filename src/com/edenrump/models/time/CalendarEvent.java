@@ -46,7 +46,6 @@ public class CalendarEvent {
         this.subject = subject;
         setStart(start);
         setEnd(end);
-        System.out.println("Start time: " + this.start);
     }
 
     public void setEnd(LocalDateTime end) {
