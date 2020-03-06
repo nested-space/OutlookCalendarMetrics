@@ -3,11 +3,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/10.0.2-internal"  stylesheets="@../css/application.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.edenrump.controllers.MainViewController">
-   <center>
-       <VBox alignment="CENTER" fx:id="dragTarget" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <Label layoutX="54.0" layoutY="92.0" text="Drop Files Here :)"/>
-       </VBox>
-   </center>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx/10.0.2-internal" stylesheets="@../css/application.css"
+            styleClass="shadow-pane"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="500.0" prefWidth="800.0"
+            fx:controller="com.edenrump.controllers.MainViewController">
+    <center>
+        <VBox styleClass="background-pane" spacing="10" fx:id="dragTarget">
+            <HBox alignment="BASELINE_LEFT">
+                <padding>
+                    <Insets left="5" right="5"/>
+                </padding>
+                <HBox spacing="10" id="left-icons" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                    <Button fx:id="fileButton" styleClass="file-button" onAction="#openFile"/>
+                    <Button styleClass="email-button"/>
+                </HBox>
+                <HBox spacing="10" id="right-icons" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button styleClass="settings-button"/>
+                    <Button styleClass="git-button"/>
+                    <Button styleClass="exit-button" onAction="#exit"/>
+                </HBox>
+            </HBox>
+            <StackPane VBox.vgrow="ALWAYS">
+                <VBox alignment="CENTER" styleClass="content-frame">
+                    <Label layoutX="54.0" layoutY="92.0" text="Drop Files Here :)"/>
+                </VBox>
+            </StackPane>
+        </VBox>
+    </center>
 </BorderPane>

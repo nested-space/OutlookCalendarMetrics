@@ -4,12 +4,17 @@ import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
 import com.edenrump.models.time.Calendar;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
@@ -25,6 +30,7 @@ public class MainViewController implements Initializable {
     private static final int READY = 3;
     private static final int COMPLETE = 4;
     private static final int ERROR = 5;
+    public Button fileButton;
     private IntegerProperty applicationState;
 
     /**
@@ -61,7 +67,7 @@ public class MainViewController implements Initializable {
         for (String category : projects) {
             Calendar categoryCalendar = calendar.extractCalendarByCategory(category);
             double bookedTime = ((double) categoryCalendar.calculateTotalBookedTime(include).toMinutes()) / 60;
-            System.out.println(category + ": \t" + df2.format(bookedTime * totalCalendarBookedTime/dedicatedProjectTime) + " h");
+            System.out.println(category + ": \t" + df2.format(bookedTime * totalCalendarBookedTime / dedicatedProjectTime) + " h");
         }
 
         double timeMeetings = ((double) calendar.calculateTimeInMeetings(include).toMinutes()) / 60;
@@ -147,5 +153,21 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         enableFileLoad();
+    }
+
+    public void exit(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    public void openFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma Separated Values", "*.csv"));
+        fileChooser.setTitle("Open Calendar Export File");
+        fileChooser.setInitialDirectory(new File("C:/Users/" + System.getProperty("user.name") + "/Desktop"));
+        File toOpen = fileChooser.showOpenDialog(fileButton.getScene().getWindow());
+        if(toOpen!=null){
+            loadFile(toOpen);
+        }
+        actionEvent.consume();
     }
 }
