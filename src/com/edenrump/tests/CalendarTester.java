@@ -1,4 +1,4 @@
-package com.edenrump;
+package com.edenrump.tests;
 
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;

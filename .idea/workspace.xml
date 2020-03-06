@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/css/uitest.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/fxml/UITest.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/edenrump/tests/UITest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/edenrump/tests/UITestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CalendarMetrics/META-INF/CalendarMetrics.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/CalendarMetrics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/CalendarMetrics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/CalendarTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/CalendarTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/controllers/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/controllers/MainViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/models/time/Calendar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/models/time/Calendar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/models/time/CalendarEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/models/time/CalendarEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/edenrump/util/CalendarUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/models/time/CalendarUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/edenrump/CalendarTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/edenrump/tests/CalendarTester.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +63,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -124,7 +123,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.CalendarMetrics">
+  <component name="RunManager" selected="Application.UITest">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -159,9 +158,16 @@
       </method>
     </configuration>
     <configuration name="CalendarTester" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.edenrump.CalendarTester" />
+      <option name="MAIN_CLASS_NAME" value="com.edenrump.tests.CalendarTester" />
       <module name="CalendarMetrics" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UITest" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.edenrump.tests.UITest" />
+      <module name="CalendarMetrics" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -203,6 +209,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.CalendarMetrics" />
+      <item itemvalue="Application.UITest" />
+      <item itemvalue="Application.CalendarTester" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.CalendarTester" />
