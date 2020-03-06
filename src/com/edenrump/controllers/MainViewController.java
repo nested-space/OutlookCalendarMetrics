@@ -13,7 +13,8 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.text.DecimalFormat;
+import java.util.*;
 
 public class MainViewController implements Initializable {
 
@@ -37,14 +38,35 @@ public class MainViewController implements Initializable {
         dragTarget.setOnDragOver(this::handleDragOver);
     }
 
-    public void loadFile(File file){
+    public void loadFile(File file) {
         Table loadedData = CSVUtils.loadCSV(file);
 
         //TODO: validate table entries with required headers
         Calendar calendar = new Calendar(loadedData);
 
-        System.out.println(calendar.calculateTotalBookedTime().toHours());
 
+        Set<String> projects = new HashSet<>(Arrays.asList());
+        Set<String> include = calendar.getCategories();
+        include.removeAll(Collections.singletonList("0. Personal"));
+
+        double totalCalendarBookedTime = ((double) calendar.calculateTotalBookedTime(include).toMinutes()) / 60;
+        double dedicatedProjectTime = ((double) calendar.calculateTotalBookedTime(projects).toMinutes()) / 60;
+        System.out.println("\n-------------- Total Time -------------------");
+        System.out.println("Total time booked: " + totalCalendarBookedTime);
+        System.out.println("Dedicated project time: " + dedicatedProjectTime);
+
+        DecimalFormat df2 = new DecimalFormat("#.##");
+        Map<String, Calendar> calendarsByCategory = new HashMap<>();
+        System.out.println("\n------------ Normalised Project Time ------------");
+        for (String category : projects) {
+            Calendar categoryCalendar = calendar.extractCalendarByCategory(category);
+            double bookedTime = ((double) categoryCalendar.calculateTotalBookedTime(include).toMinutes()) / 60;
+            System.out.println(category + ": \t" + df2.format(bookedTime * totalCalendarBookedTime/dedicatedProjectTime) + " h");
+        }
+
+        double timeMeetings = ((double) calendar.calculateTimeInMeetings(include).toMinutes()) / 60;
+        System.out.println("\n------------------- Meetings  -------------------");
+        System.out.println("Percent time in meetings: " + df2.format(timeMeetings / totalCalendarBookedTime * 100));
 
     }
 
@@ -52,7 +74,7 @@ public class MainViewController implements Initializable {
         System.out.println("Total booked time = ");
     }
 
-    private void updateDisplayWithErrorMessage(String errorMessage){
+    private void updateDisplayWithErrorMessage(String errorMessage) {
 
     }
 
