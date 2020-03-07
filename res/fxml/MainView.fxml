@@ -18,6 +18,7 @@
                 <HBox spacing="10" id="left-icons" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
                     <Button fx:id="fileButton" styleClass="file-button" onAction="#openFile"/>
                     <Button styleClass="email-button"/>
+                    <Button styleClass="image-button" onAction="#selectFileToSaveWindowImage"/>
                 </HBox>
                 <Label styleClass="title-text" text="Outlook Metrics"/>
                 <HBox spacing="10" id="right-icons" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">

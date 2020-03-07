@@ -1,5 +1,6 @@
 package com.edenrump.controllers;
 
+import com.edenrump.comms.Clipper;
 import com.edenrump.comms.Launcher;
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
@@ -9,7 +10,9 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -17,10 +20,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainViewController implements Initializable {
 
@@ -181,9 +190,32 @@ public class MainViewController implements Initializable {
 
     public void launchGithubWebsite(ActionEvent actionEvent) {
         Launcher.handleOpenHyperlink("https://github.com/nested-space/OutlookCalendarMetrics");
+        actionEvent.consume();
     }
 
     private Window getWindow() {
         return dragTarget.getScene().getWindow();
+    }
+
+    public void selectFileToSaveWindowImage(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Portable Network Graphic (PNG)", "*.png"));
+        fileChooser.setTitle("Save Window as Image");
+        fileChooser.setInitialDirectory(new File("C:/Users/" + System.getProperty("user.name") + "/Desktop"));
+        File toSave = fileChooser.showSaveDialog(fileButton.getScene().getWindow());
+        if (toSave != null) {
+            saveImage(dragTarget.snapshot(new SnapshotParameters(), null), toSave);
+        }
+    }
+
+    private void saveImage(WritableImage snapshot, File file) {
+        BufferedImage image = javafx.embed.swing.SwingFXUtils.fromFXImage(snapshot, null);
+        try {
+            Graphics2D gd = (Graphics2D) image.getGraphics();
+            gd.translate(dragTarget.getWidth(), dragTarget.getHeight());
+            ImageIO.write(image, "png", file);
+        } catch (IOException ex) {
+            Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
+        };
     }
 }
