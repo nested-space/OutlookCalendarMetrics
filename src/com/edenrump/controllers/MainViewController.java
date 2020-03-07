@@ -1,5 +1,6 @@
 package com.edenrump.controllers;
 
+import com.edenrump.comms.Launcher;
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
@@ -12,9 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.net.URL;
@@ -23,6 +24,12 @@ import java.util.*;
 
 public class MainViewController implements Initializable {
 
+    double initialWindowX;
+    double initialWindowY;
+    double initialMouseX;
+    double initialMouseY;
+    double deltaX;
+    double deltaY;
     public VBox dragTarget;
 
     private static final int START = 1;
@@ -43,6 +50,7 @@ public class MainViewController implements Initializable {
         dragTarget.setOnDragExited(this::handleDragExit);
         dragTarget.setOnDragOver(this::handleDragOver);
     }
+
 
     public void loadFile(File file) {
         Table loadedData = CSVUtils.loadCSV(file);
@@ -165,9 +173,17 @@ public class MainViewController implements Initializable {
         fileChooser.setTitle("Open Calendar Export File");
         fileChooser.setInitialDirectory(new File("C:/Users/" + System.getProperty("user.name") + "/Desktop"));
         File toOpen = fileChooser.showOpenDialog(fileButton.getScene().getWindow());
-        if(toOpen!=null){
+        if (toOpen != null) {
             loadFile(toOpen);
         }
         actionEvent.consume();
+    }
+
+    public void launchGithubWebsite(ActionEvent actionEvent) {
+        Launcher.handleOpenHyperlink("https://github.com/nested-space/OutlookCalendarMetrics");
+    }
+
+    private Window getWindow() {
+        return dragTarget.getScene().getWindow();
     }
 }
