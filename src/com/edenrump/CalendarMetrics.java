@@ -15,6 +15,7 @@ public class CalendarMetrics extends Application {
 
     private double xOffset;
     private double yOffset;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
@@ -23,10 +24,12 @@ public class CalendarMetrics extends Application {
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
+            event.consume();
         });
         root.setOnMouseDragged(event -> {
             primaryStage.setX(event.getScreenX() - xOffset);
             primaryStage.setY(event.getScreenY() - yOffset);
+            event.consume();
         });
 
         Scene scene = new Scene(root);

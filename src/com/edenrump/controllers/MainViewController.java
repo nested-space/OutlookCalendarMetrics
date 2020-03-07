@@ -1,26 +1,30 @@
 package com.edenrump.controllers;
 
-import com.edenrump.comms.Clipper;
 import com.edenrump.comms.Launcher;
 import com.edenrump.config.Defaults;
 import com.edenrump.loaders.CSVUtils;
 import com.edenrump.models.data.Table;
 import com.edenrump.models.time.Calendar;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Window;
+import javafx.util.Duration;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -42,11 +46,16 @@ public class MainViewController implements Initializable {
     private static final int ERROR = 5;
     private IntegerProperty applicationState = new SimpleIntegerProperty(START);
 
+    Point2D fileDropMouseLocation = new Point2D(250, 400);
+
     @FXML
     private Button fileButton;
 
     @FXML
     private VBox dragTarget;
+
+    @FXML
+    private VBox contentPane;
 
     /**
      * Called to initialize a controller after its root element has been
@@ -97,6 +106,10 @@ public class MainViewController implements Initializable {
         if (db.hasFiles()) {
             dragTarget.getStyleClass().remove(Defaults.DRAG_ALLOWED);
             if (db.getFiles().size() == 1) {
+                setFileDropLocation(dragEvent.getX(), dragEvent.getY());
+                createAndStartValidatingAnimation();
+
+                //TODO: validate file pre-loading
                 loadFile(db.getFiles().get(0));
                 success = true;
             } else {
@@ -108,7 +121,6 @@ public class MainViewController implements Initializable {
         /* let the source know whether the string was successfully
          * transferred and used */
         dragEvent.setDropCompleted(success);
-
         dragEvent.consume();
     }
 
@@ -130,6 +142,41 @@ public class MainViewController implements Initializable {
         dragTarget.getStyleClass().add(Defaults.DRAG_ALLOWED);
     }
 
+    private void createAndStartValidatingAnimation() {
+        double focusPercentX = fileDropMouseLocation.getX() / 780 * 100;
+        double focusPercentY = fileDropMouseLocation.getY() / 480 * 100;
+        DoubleProperty timelinePosition = new SimpleDoubleProperty(0);
+        timelinePosition.addListener((obs, o, n) -> {
+            contentPane.setStyle(createRadialGradientStyleString(
+                    focusPercentX, focusPercentY, n.doubleValue(), "#ffffff22", "#38ef7dcc"));
+        });
+        Timeline loadingAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(timelinePosition, 0)),
+                new KeyFrame(Duration.millis(1000), new KeyValue(timelinePosition, 800))
+        );
+        loadingAnimation.play();
+    }
+
+    private String createRadialGradientStyleString(double focusPercentX, double focusPercentY, double radius, String color1, String color2) {
+        DecimalFormat zeroDP = new DecimalFormat("##");
+        return "-fx-background-color: radial-gradient(center " + zeroDP.format(focusPercentX) + "% " +
+                zeroDP.format(focusPercentY) + "%, radius " +
+                zeroDP.format(radius) + "%, " +
+                color1 + ", " +
+                color2 + ");";
+    }
+
+    private void setFileDropLocation(double x, double y) {
+        fileDropMouseLocation = new Point2D(x, y);
+    }
+
+    @FXML
+    private void handleContentPaneClicked(MouseEvent event) {
+        setFileDropLocation(event.getX(), event.getY());
+        createAndStartValidatingAnimation();
+        event.consume();
+    }
+
     @FXML
     private void handleOpenFileButtonClicked(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -144,7 +191,7 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void handleExitButtonClicked(ActionEvent event){
+    private void handleExitButtonClicked(ActionEvent event) {
         exit();
         event.consume();
     }
@@ -209,7 +256,7 @@ public class MainViewController implements Initializable {
             ImageIO.write(image, "png", file);
         } catch (IOException ex) {
             Logger.getLogger(MainViewController.class.getName()).log(Level.SEVERE, null, ex);
-        };
+        }
     }
 
 }

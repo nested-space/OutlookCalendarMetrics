@@ -27,8 +27,8 @@
                     <Button styleClass="exit-button" onAction="#handleExitButtonClicked"/>
                 </HBox>
             </HBox>
-            <StackPane VBox.vgrow="ALWAYS">
-                <VBox alignment="CENTER" styleClass="pre-content-frame">
+            <StackPane VBox.vgrow="ALWAYS" onMouseClicked="#handleContentPaneClicked">
+                <VBox fx:id="contentPane" alignment="CENTER" styleClass="pre-content-pane">
                     <Label styleClass="title-text" text="Drop Calendar Export CSV"/>
                     <Label styleClass="title-text" text="to Load Metrics..."/>
                 </VBox>
