@@ -16,15 +16,15 @@
                     <Insets left="5" right="5"/>
                 </padding>
                 <HBox spacing="10" id="left-icons" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                    <Button fx:id="fileButton" styleClass="file-button" onAction="#openFile"/>
+                    <Button fx:id="fileButton" styleClass="file-button" onAction="#handleOpenFileButtonClicked"/>
                     <Button styleClass="email-button"/>
-                    <Button styleClass="image-button" onAction="#selectFileToSaveWindowImage"/>
+                    <Button styleClass="image-button" onAction="#handleSaveImageButtonClicked"/>
                 </HBox>
                 <Label styleClass="title-text" text="Outlook Metrics"/>
                 <HBox spacing="10" id="right-icons" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
                     <Button styleClass="settings-button"/>
-                    <Button styleClass="git-button" onAction="#launchGithubWebsite"/>
-                    <Button styleClass="exit-button" onAction="#exit"/>
+                    <Button styleClass="git-button" onAction="#handleLaunchGithubWebsiteButtonClicked"/>
+                    <Button styleClass="exit-button" onAction="#handleExitButtonClicked"/>
                 </HBox>
             </HBox>
             <StackPane VBox.vgrow="ALWAYS">
