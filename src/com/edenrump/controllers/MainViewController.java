@@ -14,14 +14,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -47,6 +48,12 @@ public class MainViewController implements Initializable {
     private IntegerProperty applicationState = new SimpleIntegerProperty(START);
 
     Point2D fileDropMouseLocation = new Point2D(250, 400);
+
+    @FXML
+    private VBox messagePane;
+
+    @FXML
+    private Label statusLabel;
 
     @FXML
     private Button fileButton;
@@ -157,15 +164,6 @@ public class MainViewController implements Initializable {
         loadingAnimation.play();
     }
 
-    private String createRadialGradientStyleString(double focusPercentX, double focusPercentY, double radius, String color1, String color2) {
-        DecimalFormat zeroDP = new DecimalFormat("##");
-        return "-fx-background-color: radial-gradient(center " + zeroDP.format(focusPercentX) + "% " +
-                zeroDP.format(focusPercentY) + "%, radius " +
-                zeroDP.format(radius) + "%, " +
-                color1 + ", " +
-                color2 + ");";
-    }
-
     private void setFileDropLocation(double x, double y) {
         fileDropMouseLocation = new Point2D(x, y);
     }
@@ -220,10 +218,39 @@ public class MainViewController implements Initializable {
 
     private void loadFile(File file) {
         Table loadedData = CSVUtils.loadCSV(file);
-
-        //TODO: validate table entries with required headers
         Calendar calendar = new Calendar(loadedData);
+        if(validateCalendarData(calendar)) {
+            displayMetrics(calendar);
+        } else {
+            displayTemporaryMessage("Calendar data not valid or does not contain any entries. Please load another file");
+        }
+    }
 
+    private void displayTemporaryMessage(String message) {
+        Label errorLabel = new Label(message);
+        errorLabel.setWrapText(true);
+        errorLabel.getStyleClass().add("error-label");
+        errorLabel.setOpacity(0);
+        messagePane.getChildren().add(errorLabel);
+
+        double fadeTime = 500;
+        double messageDisplayTime = 2000;
+
+        Timeline displayErrorMessage = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(errorLabel.opacityProperty(), 0)),
+                new KeyFrame(Duration.millis(fadeTime), new KeyValue(errorLabel.opacityProperty(), 1)),
+                new KeyFrame(Duration.millis(fadeTime + messageDisplayTime), new KeyValue(errorLabel.opacityProperty(), 1)),
+                new KeyFrame(Duration.millis(fadeTime * 2 + messageDisplayTime), new KeyValue(errorLabel.opacityProperty(), 0))
+        );
+        displayErrorMessage.setOnFinished(event -> messagePane.getChildren().remove(errorLabel));
+        displayErrorMessage.playFromStart();
+    }
+
+    private boolean validateCalendarData(Calendar calendar){
+        return calendar.getEvents().size() > 0;
+    }
+
+    private void displayMetrics(Calendar calendar){
         Set<String> projects = new HashSet<>(Arrays.asList());
         Set<String> include = calendar.getCategories();
         include.removeAll(Collections.singletonList("0. Personal"));
@@ -259,4 +286,12 @@ public class MainViewController implements Initializable {
         }
     }
 
+    private String createRadialGradientStyleString(double focusPercentX, double focusPercentY, double radius, String color1, String color2) {
+        DecimalFormat zeroDP = new DecimalFormat("##");
+        return "-fx-background-color: radial-gradient(center " + zeroDP.format(focusPercentX) + "% " +
+                zeroDP.format(focusPercentY) + "%, radius " +
+                zeroDP.format(radius) + "%, " +
+                color1 + ", " +
+                color2 + ");";
+    }
 }

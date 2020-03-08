@@ -25,6 +25,21 @@
     -fx-font-size: 14;
 }
 
+.error-label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+    -fx-background-color: linear-gradient(to right, #0f0c2977, #302b6377, #24243e77);
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+
+    -width: 400;
+    -fx-min-width: -width;
+    -fx-max-width: -width;
+
+}
+
 .button{
     -height: 20;
     -width: 20;
