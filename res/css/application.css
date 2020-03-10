@@ -9,9 +9,12 @@
    -fx-padding: 10px;
 }
 
-.pre-content-pane{
+.content-pane{
    -fx-background-color: #ffffff22;
    -fx-background-radius: 10px;
+   -fx-spacing: 35px;
+   -fx-padding: 25px;
+   -fx-alignment: center;
 }
 
 .drag-allowed{

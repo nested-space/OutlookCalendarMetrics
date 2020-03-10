@@ -11,4 +11,8 @@ public class Defaults {
      */
     public static final String MULTIPLE_FILE_UNSUPPORTED = "Multiple file import not currently supported...";
 
+    public static final int START = 1;
+    public static final int CALCULATING = 2;
+    public static final int LOADED = 4;
+    public static final int ERROR = 5;
 }
