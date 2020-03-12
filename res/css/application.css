@@ -17,6 +17,14 @@
    -fx-alignment: center;
 }
 
+.transparent-background{
+   -fx-background-color: transparent;
+}
+
+.transparent-background > .viewport{
+   -fx-background-color: transparent;
+}
+
 .drag-allowed{
     -fx-background-color: linear-gradient(from 25px 25px to 500px 300px, #0052D4, #4364F7);
     -fx-background-radius: 10px;
