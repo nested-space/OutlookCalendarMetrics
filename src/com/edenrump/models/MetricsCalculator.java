@@ -94,15 +94,18 @@ public class MetricsCalculator {
 
         MetricBlock projectTime = new MetricBlock("---------------- Time By Calendar Categories ----------------");
         for (String category : projects) {
-            if(exclude.contains(category)) continue;
+            if (exclude.contains(category)) continue;
+
+            String categoryLabel = category.equals("") ? "No category" : category;
+
             Calendar categoryCalendar = calendar.extractCalendarByCategory(category);
             double bookedTime = ((double) categoryCalendar.calculateTotalBookedTime(include).toMinutes()) / 60;
-            projectTime.addMetric(category + ": \t", format2dp(bookedTime) + " h");
+            projectTime.addMetric(categoryLabel + ": \t", format2dp(bookedTime) + " h");
         }
 
         metricsContainer.displayMetrics(Arrays.asList(totalTime, projectTime));
     }
-    
+
     private void setFileDropLocation(double x, double y) {
         //TODO: validate that x and y are within content container's bounds
         fileDropMouseLocation = new Point2D(x, y);
