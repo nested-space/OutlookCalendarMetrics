@@ -20,10 +20,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class MetricsCalculator {
 
@@ -81,28 +78,29 @@ public class MetricsCalculator {
     }
 
     private void displayMetrics(Calendar calendar) {
-        Set<String> projects = new HashSet<>(Arrays.asList("3. AZD5991", "4. Fast Method Development", "2. Cotadutide"));
+        List<String> projects = new ArrayList<>(calendar.getCategories());
+        Collections.sort(projects);
+        Set<String> exclude = new HashSet<>(Collections.singletonList("0. Personal"));
         Set<String> include = calendar.getCategories();
-        include.removeAll(Collections.singletonList("0. Personal"));
+        include.removeAll(exclude);
         double totalCalendarBookedTime = ((double) calendar.calculateTotalBookedTime(include).toMinutes()) / 60;
-        double dedicatedProjectTime = ((double) calendar.calculateTotalBookedTime(projects).toMinutes()) / 60;
 
-        MetricBlock totalTime = new MetricBlock("------------------ Total Time -------------------");
+        MetricBlock totalTime = new MetricBlock("------------------------ Total Time -------------------------");
         totalTime.addMetric("Total time booked: ", format2dp(totalCalendarBookedTime) + " h");
-        totalTime.addMetric("Dedicated project time: ", format2dp(dedicatedProjectTime) + " h");
+        double timeMeetings = ((double) calendar.calculateTimeInMeetings(include).toMinutes()) / 60;
+        double defaultWorkingWeek = 36.5;
+        totalTime.addMetric("Total time in meetings: ", format2dp(timeMeetings) + " h");
+        totalTime.addMetric("Meeting % of 36.5h working week: ", format2dp(timeMeetings / defaultWorkingWeek * 100) + "%");
 
-        MetricBlock projectTime = new MetricBlock("------------ Normalised Project Time ------------");
+        MetricBlock projectTime = new MetricBlock("---------------- Time By Calendar Categories ----------------");
         for (String category : projects) {
+            if(exclude.contains(category)) continue;
             Calendar categoryCalendar = calendar.extractCalendarByCategory(category);
             double bookedTime = ((double) categoryCalendar.calculateTotalBookedTime(include).toMinutes()) / 60;
-            projectTime.addMetric(category + ": \t", format2dp(bookedTime * totalCalendarBookedTime / dedicatedProjectTime) + " h");
+            projectTime.addMetric(category + ": \t", format2dp(bookedTime) + " h");
         }
 
-        MetricBlock meetingTime = new MetricBlock("------------------- Meetings  -------------------");
-        double timeMeetings = ((double) calendar.calculateTimeInMeetings(include).toMinutes()) / 60;
-        meetingTime.addMetric("Percent time in meetings: ", format2dp(timeMeetings / totalCalendarBookedTime * 100) + "%");
-
-        metricsContainer.displayMetrics(Arrays.asList(totalTime, projectTime, meetingTime));
+        metricsContainer.displayMetrics(Arrays.asList(totalTime, projectTime));
     }
     
     private void setFileDropLocation(double x, double y) {
